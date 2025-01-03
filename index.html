@@ -177,7 +177,7 @@
         }
         function generatePassword() {
             const password = 'xyl' + document.getElementById('password').value + 'yj';
-            const siteName = document.getElementById('siteName').value.toLowerCase();
+            const siteName = document.getElementById('siteName').value.toLowerCase().trim();
             const otherNum = document.getElementById('otherNum').value || 0;
 
             if (!password || !siteName) {
