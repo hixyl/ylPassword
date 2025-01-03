@@ -1,202 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>密码生成器</title>
-  <script src="./crypto-js.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f7f8fa;
-      color: #333;
-    }
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-      text-align: center;
-      padding: 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    .input-group {
-      position: relative;
-      margin-bottom: 15px;
-    }
-    input {
-      padding: 10px 40px 10px 10px;
-      width: 100%;
-      font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-    .toggle-password {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      color: #555;
-    }
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .gebtn:hover {
-      background-color: #0056b3;
-    }
-    .output {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .output span {
-      margin-right: 10px;
-      word-break: break-all;
-    }
-    .copy-btn {
-      padding: 5px 10px;
-      font-size: 14px;
-      cursor: pointer;
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-    .copy-btn:hover {
-      background-color: #218838;
-    }
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #333;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 14px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
-      z-index: 1000;
-    }
-    .toast.show {
-      opacity: 1;
-      visibility: visible;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码生成器</title>
+    <script src="./crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f7f8fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 10px 40px 10px 10px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .gebtn:hover {
+            background-color: #0056b3;
+        }
+
+        .output {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .output span {
+            margin-right: 10px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>密码生成器</h1>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="输入密码" />
-      <button class="toggle-password" onclick="togglePasswordVisibility('password')">显示</button>
+    <div class="container">
+        <h1>密码查看器</h1>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="口令" />
+            <button class="toggle-password" onclick="togglePasswordVisibility('password')">显示</button>
+        </div>
+        <div class="input-group">
+            <input type="text" id="siteName" placeholder="网站名称（English / Pinyin）" />
+        </div>
+        <div class="input-group">
+            <input type="number" id="otherNum" placeholder="额外数" />
+        </div>
+        <button class="gebtn" onclick="generatePassword()">生成密码</button>
+        <div class="output" id="outputContainer">
+            <span id="generatedPassword"></span>
+            <button class="copy-btn" onclick="copyToClipboard()">复制</button>
+        </div>
     </div>
-    <div class="input-group">
-      <input type="text" id="siteName" placeholder="输入网站名称" />
-    </div>
-    <button class="gebtn" onclick="generatePassword()">生成密码</button>
-    <div class="output" id="outputContainer">
-      <span id="generatedPassword"></span>
-      <button class="copy-btn" onclick="copyToClipboard()">复制</button>
-    </div>
-  </div>
 
-  <!-- Toast 提示 -->
-  <div id="toast" class="toast">密码已复制到剪贴板！</div>
+    <!-- Toast 提示 -->
+    <div id="toast" class="toast">密码已复制到剪贴板！</div>
 
-  <script>
-    function generateUniqueString(input, site, length = 10) {
-      if (length < 4) {
-        throw new Error('输出长度必须至少为4。');
-      }
-      const hash = CryptoJS.SHA256(input + site).toString(CryptoJS.enc.Hex);
-      const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
-      const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-      const digits = '0123456789';
-      let result = '';
-      result += uppercaseChars[parseInt(hash[0], 16) % uppercaseChars.length];
-      result += lowercaseChars[parseInt(hash[1], 16) % lowercaseChars.length];
-      result += specialChars[parseInt(hash[2], 16) % specialChars.length];
-      result += digits[parseInt(hash[3], 16) % digits.length];
-      const allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`;
-      for (let i = 4; result.length < length; i++) {
-        result += allowedChars[parseInt(hash[i % hash.length], 16) % allowedChars.length];
-      }
-      return result;
-    }
+    <script>
+        function generateUniqueString(input, site, length = 10) {
+            if (length < 4) {
+                throw new Error('输出长度必须至少为4。');
+            }
+            const hash = CryptoJS.SHA256(input + site).toString(CryptoJS.enc.Hex);
+            const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            const digits = '0123456789';
+            let result = '';
+            result += uppercaseChars[parseInt(hash[0], 16) % uppercaseChars.length];
+            result += lowercaseChars[parseInt(hash[1], 16) % lowercaseChars.length];
+            result += specialChars[parseInt(hash[2], 16) % specialChars.length];
+            result += digits[parseInt(hash[3], 16) % digits.length];
+            const allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`;
+            for (let i = 4; result.length < length; i++) {
+                result += allowedChars[parseInt(hash[i % hash.length], 16) % allowedChars.length];
+            }
+            return result;
+        }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        function generatePassword() {
+            const password = 'xyl' + document.getElementById('password').value + 'yj';
+            const siteName = document.getElementById('siteName').value.toLowerCase();
+            const otherNum = document.getElementById('otherNum').value || 0;
 
-    function generatePassword() {
-      const password = 'xyl' + document.getElementById('password').value + 'yj';
-      const siteName = document.getElementById('siteName').value;
-      if (!password || !siteName) {
-        alert('请填写密码和网站名称！');
-        return;
-      }
-      const generatedPassword = generateUniqueString(password, siteName, 15);
-      document.getElementById('generatedPassword').textContent = generatedPassword;
-    }
+            if (!password || !siteName) {
+                showToast('请填写口令和网站名称！');
+                return;
+            }
+            const generatedPassword = generateUniqueString(password, siteName + otherNum, 15);
+            document.getElementById('generatedPassword').textContent = generatedPassword;
+        }
 
-    function togglePasswordVisibility(id) {
-      const input = document.getElementById(id);
-      const button = input.nextElementSibling;
-      if (input.type === 'password') {
-        input.type = 'text';
-        button.textContent = '隐藏';
-      } else {
-        input.type = 'password';
-        button.textContent = '显示';
-      }
-    }
+        function togglePasswordVisibility(id) {
+            const input = document.getElementById(id);
+            const button = input.nextElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '隐藏';
+            } else {
+                input.type = 'password';
+                button.textContent = '显示';
+            }
+        }
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
-    }
 
-    function copyToClipboard() {
-      const password = document.getElementById('generatedPassword').textContent;
-      if (!password) {
-        showToast('没有生成密码可复制！');
-        return;
-      }
-      navigator.clipboard.writeText(password)
-        .then(() => {
-          showToast('密码已复制到剪贴板！');
-        })
-        .catch(err => {
-          showToast('复制失败，请手动复制！');
-          console.error(err);
-        });
-    }
-  </script>
+
+        function copyToClipboard() {
+            const password = document.getElementById('generatedPassword').textContent;
+            if (!password) {
+                showToast('没有生成密码可复制！');
+                return;
+            }
+
+            // 现代方法：使用 navigator.clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(password)
+                    .then(() => {
+                        showToast('密码已复制到剪贴板！');
+                    })
+                    .catch(err => {
+                        console.error('Clipboard write failed:', err);
+                        fallbackCopyTextToClipboard(password);
+                    });
+            } else {
+                // 旧版方法：使用 document.execCommand 作为回退
+                fallbackCopyTextToClipboard(password);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed'; // 防止页面滚动
+            textArea.style.left = '-9999px'; // 移出屏幕
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('密码已复制到剪贴板！');
+                } else {
+                    showToast('复制失败，请手动复制！');
+                }
+            } catch (err) {
+                console.error('Fallback: Copy command failed', err);
+                showToast('复制失败，请手动复制！');
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
+    </script>
 </body>
+
 </html>
