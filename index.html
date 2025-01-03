@@ -120,6 +120,16 @@
             opacity: 1;
             visibility: visible;
         }
+       
+        .checkbox-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: gray;
+        }
     </style>
 </head>
 
@@ -136,6 +146,11 @@
         <div class="input-group">
             <input type="number" id="otherNum" placeholder="额外数" />
         </div>
+        <!-- 保存口令 -->
+         <div class="checkbox-area">
+            <input type="checkbox" id="savePassword" name="savePassword" style="width: fit-content;"/>
+            <div>保存口令</div>
+         </div>
         <button class="gebtn" onclick="generatePassword()">查看密码</button>
         <div class="output" id="outputContainer">
             <span id="generatedPassword"></span>
@@ -147,6 +162,14 @@
     <div id="toast" class="toast">密码已复制到剪贴板！</div>
 
     <script>
+        const TOKEN = 'token-ylsave';
+        window.onload = () => {
+            const token = localStorage.getItem(TOKEN);
+            if (token) {
+                document.getElementById('password').value = token;
+                document.getElementById('savePassword').checked = true;
+            }
+        }
         function generateUniqueString(input, site, length = 10) {
             if (length < 4) {
                 throw new Error('输出长度必须至少为4。');
@@ -179,6 +202,11 @@
             const password = 'xyl' + document.getElementById('password').value + 'yj';
             const siteName = document.getElementById('siteName').value.toLowerCase().trim();
             const otherNum = document.getElementById('otherNum').value || 0;
+            if (document.getElementById('savePassword').checked) {
+                localStorage.setItem(TOKEN, document.getElementById('password').value);
+            } else {
+                localStorage.removeItem(TOKEN);
+            }
 
             if (!password || !siteName) {
                 showToast('请填写口令和网站名称！');
