@@ -254,6 +254,7 @@
         }
         function reset() {
             document.getElementById('siteName').value = '';
+            document.getElementById('generatedPassword').textContent = '';
             const token = localStorage.getItem(TOKEN);
             if (token) {
                 document.getElementById('password').value = token;
