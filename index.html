@@ -307,6 +307,9 @@
             }
 
             coptTextToClipboard(password);
+            setTimeout(() => {
+                reset();
+            }, 15000)
         }
         function coptTextToClipboard(text) {
            // 现代方法：使用 navigator.clipboard
