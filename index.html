@@ -120,7 +120,7 @@
             opacity: 1;
             visibility: visible;
         }
-       
+
         .checkbox-area {
             display: flex;
             align-items: center;
@@ -147,10 +147,10 @@
             <input type="number" id="otherNum" placeholder="额外数" />
         </div>
         <!-- 保存口令 -->
-         <div class="checkbox-area">
-            <input type="checkbox" id="savePassword" name="savePassword" style="width: fit-content;"/>
+        <div class="checkbox-area">
+            <input type="checkbox" id="savePassword" name="savePassword" style="width: fit-content;" />
             <div>保存口令</div>
-         </div>
+        </div>
         <button class="gebtn" onclick="generatePassword()">查看密码</button>
         <div class="output" id="outputContainer">
             <span id="generatedPassword"></span>
@@ -174,20 +174,32 @@
             if (length < 4) {
                 throw new Error('输出长度必须至少为4。');
             }
-            const hash = CryptoJS.SHA256(input + site).toString(CryptoJS.enc.Hex);
+
+            // 使用 HMAC 增强安全性
+            const key = CryptoJS.SHA256(site).toString(CryptoJS.enc.Hex);
+            const hash = CryptoJS.HmacSHA256(input + length, key).toString(CryptoJS.enc.Hex);
+
             const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
             const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
             const digits = '0123456789';
+            const allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`;
+
             let result = '';
             result += uppercaseChars[parseInt(hash[0], 16) % uppercaseChars.length];
             result += lowercaseChars[parseInt(hash[1], 16) % lowercaseChars.length];
             result += specialChars[parseInt(hash[2], 16) % specialChars.length];
             result += digits[parseInt(hash[3], 16) % digits.length];
-            const allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`;
+
             for (let i = 4; result.length < length; i++) {
-                result += allowedChars[parseInt(hash[i % hash.length], 16) % allowedChars.length];
+                const charIndex = parseInt(hash[i % hash.length], 16) ^ (length + i);
+                result += allowedChars[charIndex % allowedChars.length];
             }
+            result = result
+                .split('')
+                .sort(() => parseInt(hash[length % hash.length], 16) % 2 === 0 ? 1 : -1)
+                .join('');
+
             return result;
         }
         function showToast(message) {
@@ -212,7 +224,7 @@
                 showToast('请填写口令和网站名称！');
                 return;
             }
-            const generatedPassword = generateUniqueString(password, siteName + otherNum, 15);
+            const generatedPassword = generateUniqueString(password, siteName + otherNum, 12);
             document.getElementById('generatedPassword').textContent = generatedPassword;
         }
 
