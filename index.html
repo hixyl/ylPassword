@@ -69,6 +69,11 @@
         .gebtn:hover {
             background-color: #0056b3;
         }
+        .resetbtn {
+            background-color: #d23939;
+            /* color: blac */
+            margin-left: 0.3em;
+        }
 
         .output {
             margin-top: 20px;
@@ -151,7 +156,10 @@
             <input type="checkbox" id="savePassword" name="savePassword" style="width: fit-content;" />
             <div>保存口令</div>
         </div>
-        <button class="gebtn" onclick="generatePassword()">查看密码</button>
+        <div>
+            <button class="gebtn" onclick="generatePassword()">查看密码</button>
+            <button class="resetbtn" onclick="reset()">重置</button>
+        </div>
         <div class="output" id="outputContainer">
             <span id="generatedPassword"></span>
             <button class="copy-btn" onclick="copyToClipboard()">复制</button>
@@ -243,6 +251,14 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 2000);
+        }
+        function reset() {
+            document.getElementById('siteName').value = '';
+            const token = localStorage.getItem(TOKEN);
+            if (token) {
+                document.getElementById('password').value = token;
+                document.getElementById('savePassword').checked = true;
+            }
         }
         function generatePassword() {
             const password = 'xyl' + document.getElementById('password').value + 'yj';
