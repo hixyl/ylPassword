@@ -255,6 +255,7 @@
         function reset() {
             document.getElementById('siteName').value = '';
             document.getElementById('generatedPassword').textContent = '';
+            coptTextToClipboard(' ');
             const token = localStorage.getItem(TOKEN);
             if (token) {
                 document.getElementById('password').value = token;
@@ -305,20 +306,23 @@
                 return;
             }
 
-            // 现代方法：使用 navigator.clipboard
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(password)
+            coptTextToClipboard(password);
+        }
+        function coptTextToClipboard(text) {
+           // 现代方法：使用 navigator.clipboard
+           if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
                     .then(() => {
-                        showToast('密码已复制到剪贴板！');
+                        text !== ' ' && showToast('密码已复制到剪贴板！');
                     })
                     .catch(err => {
                         console.error('Clipboard write failed:', err);
-                        fallbackCopyTextToClipboard(password);
+                        fallbackCopyTextToClipboard(text);
                     });
             } else {
                 // 旧版方法：使用 document.execCommand 作为回退
-                fallbackCopyTextToClipboard(password);
-            }
+                fallbackCopyTextToClipboard(text);
+            } 
         }
 
         function fallbackCopyTextToClipboard(text) {
@@ -331,13 +335,13 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showToast('密码已复制到剪贴板！');
+                    text !== ' ' && showToast('密码已复制到剪贴板！') ;
                 } else {
-                    showToast('复制失败，请手动复制！');
+                    text !== ' ' && showToast('复制失败，请手动复制！');
                 }
             } catch (err) {
                 console.error('Fallback: Copy command failed', err);
-                showToast('复制失败，请手动复制！');
+                text !== ' ' && showToast('复制失败，请手动复制！');
             } finally {
                 document.body.removeChild(textArea);
             }
