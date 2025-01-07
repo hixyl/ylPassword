@@ -260,6 +260,8 @@
             if (token) {
                 document.getElementById('password').value = token;
                 document.getElementById('savePassword').checked = true;
+            } else {
+                document.getElementById('password').value = '';
             }
         }
         function generatePassword() {
