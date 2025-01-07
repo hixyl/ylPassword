@@ -98,6 +98,7 @@
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s;
+            display: none;
         }
 
         .copy-btn:hover {
@@ -255,6 +256,7 @@
         function reset() {
             document.getElementById('siteName').value = '';
             document.getElementById('generatedPassword').textContent = '';
+            document.querySelector('.copy-btn').style.display = 'none';
             coptTextToClipboard(' ');
             const token = localStorage.getItem(TOKEN);
             if (token) {
@@ -281,10 +283,11 @@
             if (['12306'].includes(siteName)) {
                 const generatedPassword = generateUniqueString1(password, siteName + otherNum, 12);
                 document.getElementById('generatedPassword').textContent = generatedPassword;
-                return;
+            } else {
+                const generatedPassword = generateUniqueString(password, siteName + otherNum, 12);
+                document.getElementById('generatedPassword').textContent = generatedPassword;
             }
-            const generatedPassword = generateUniqueString(password, siteName + otherNum, 12);
-            document.getElementById('generatedPassword').textContent = generatedPassword;
+            document.querySelector('.copy-btn').style.display = 'block';
         }
 
         function togglePasswordVisibility(id) {
