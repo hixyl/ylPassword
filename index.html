@@ -69,6 +69,7 @@
         .gebtn:hover {
             background-color: #0056b3;
         }
+
         .resetbtn {
             background-color: #d23939;
             /* color: blac */
@@ -205,10 +206,14 @@
                 const charIndex = parseInt(hash[i % hash.length], 16) ^ (length + i);
                 result += allowedChars[charIndex % allowedChars.length];
             }
+            console.log(result);
             result = result
                 .split('')
-                .sort(() => parseInt(hash[length % hash.length], 16) % 2 === 0 ? 1 : -1)
+                .reverse()
+                // .sort(() => (parseInt(hash[length % hash.length], 16) % 2 === 0) ? 1 : -1)
                 .join('');
+           
+
 
             return result;
         }
@@ -318,8 +323,8 @@
             }, 15000)
         }
         function coptTextToClipboard(text) {
-           // 现代方法：使用 navigator.clipboard
-           if (navigator.clipboard && navigator.clipboard.writeText) {
+            // 现代方法：使用 navigator.clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text)
                     .then(() => {
                         text !== ' ' && showToast('密码已复制到剪贴板！');
@@ -331,7 +336,7 @@
             } else {
                 // 旧版方法：使用 document.execCommand 作为回退
                 fallbackCopyTextToClipboard(text);
-            } 
+            }
         }
 
         function fallbackCopyTextToClipboard(text) {
@@ -344,7 +349,7 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    text !== ' ' && showToast('密码已复制到剪贴板！') ;
+                    text !== ' ' && showToast('密码已复制到剪贴板！');
                 } else {
                     text !== ' ' && showToast('复制失败，请手动复制！');
                 }
