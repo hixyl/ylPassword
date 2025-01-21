@@ -245,7 +245,8 @@
             }
             result = result
                 .split('')
-                .sort(() => parseInt(hash[length % hash.length], 16) % 2 === 0 ? 1 : -1)
+                .reverse()
+                // .sort(() => parseInt(hash[length % hash.length], 16) % 2 === 0 ? 1 : -1)
                 .join('');
 
             return result;
