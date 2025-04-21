@@ -181,7 +181,7 @@
             }
         }
         // 通用方案
-        function generateUniqueString(input, site, length = 10) {
+        function generateUniqueString(input, site, length = 10, type) {
             if (length < 4) {
                 throw new Error('输出长度必须至少为4。');
             }
@@ -194,12 +194,29 @@
             const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
             const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
             const digits = '0123456789';
-            const allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`;
+            let allowedChars;
+            switch (type) {
+                case 0:
+                    // 默认方案
+                    allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`
+                    break;
+                case 1:
+                    // 去掉特殊字符,适用个别网站
+                    allowedChars = `${uppercaseChars}${lowercaseChars}${digits}`
+                    break;
+                case 2:
+                    // 更多特殊字符
+                    allowedChars = `${uppercaseChars}${specialChars}${lowercaseChars}${digits}${specialChars}`
+                    break;
+                default:
+                    allowedChars = `${uppercaseChars}${lowercaseChars}${digits}${specialChars}`
+                    break;
+            }
 
             let result = '';
             result += uppercaseChars[parseInt(hash[0], 16) % uppercaseChars.length];
             result += lowercaseChars[parseInt(hash[1], 16) % lowercaseChars.length];
-            result += specialChars[parseInt(hash[2], 16) % specialChars.length];
+            type !== 1 && (result += specialChars[parseInt(hash[2], 16) % specialChars.length]);
             result += digits[parseInt(hash[3], 16) % digits.length];
 
             for (let i = 4; result.length < length; i++) {
@@ -212,45 +229,12 @@
                 .reverse()
                 // .sort(() => (parseInt(hash[length % hash.length], 16) % 2 === 0) ? 1 : -1)
                 .join('');
-           
 
 
-            return result;
-        }
-        // 去掉特殊字符,适用个别网站
-        function generateUniqueString1(input, site, length = 10) {
-            if (length < 4) {
-                throw new Error('输出长度必须至少为4。');
-            }
-
-            // 使用 HMAC 增强安全性
-            const key = CryptoJS.SHA256(site).toString(CryptoJS.enc.Hex);
-            const hash = CryptoJS.HmacSHA256(input + length, key).toString(CryptoJS.enc.Hex);
-
-            const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
-            // const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-            const digits = '0123456789';
-            const allowedChars = `${uppercaseChars}${lowercaseChars}${digits}`;
-
-            let result = '';
-            result += uppercaseChars[parseInt(hash[0], 16) % uppercaseChars.length];
-            result += lowercaseChars[parseInt(hash[1], 16) % lowercaseChars.length];
-            // result += specialChars[parseInt(hash[2], 16) % specialChars.length];
-            result += digits[parseInt(hash[3], 16) % digits.length];
-
-            for (let i = 4; result.length < length; i++) {
-                const charIndex = parseInt(hash[i % hash.length], 16) ^ (length + i);
-                result += allowedChars[charIndex % allowedChars.length];
-            }
-            result = result
-                .split('')
-                .reverse()
-                // .sort(() => parseInt(hash[length % hash.length], 16) % 2 === 0 ? 1 : -1)
-                .join('');
 
             return result;
         }
+
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -288,10 +272,13 @@
                 return;
             }
             if (['12306'].includes(siteName)) {
-                const generatedPassword = generateUniqueString1(password, siteName + otherNum, 12);
+                const generatedPassword = generateUniqueString(password, siteName + otherNum, 12, 1);
+                document.getElementById('generatedPassword').textContent = generatedPassword;
+            } else if (['twe', 'jewthz', 'virmach', 'tmach'].includes(siteName)) {
+                const generatedPassword = generateUniqueString(password, siteName + otherNum, 15, 2);
                 document.getElementById('generatedPassword').textContent = generatedPassword;
             } else {
-                const generatedPassword = generateUniqueString(password, siteName + otherNum, 12);
+                const generatedPassword = generateUniqueString(password, siteName + otherNum, 12, 0);
                 document.getElementById('generatedPassword').textContent = generatedPassword;
             }
             document.querySelector('.copy-btn').style.display = 'block';
